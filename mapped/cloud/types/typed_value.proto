@@ -1,0 +1,82 @@
+// ******************************************************************************************************
+// Copyright 2022 Mapped Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ******************************************************************************************************
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "mapped/cloud/types/calendar_period.proto";
+import "mapped/cloud/types/date.proto";
+import "mapped/cloud/types/dayofweek.proto";
+import "mapped/cloud/types/interval.proto";
+import "mapped/cloud/types/money.proto";
+import "mapped/cloud/types/month.proto";
+import "mapped/cloud/types/phone_number.proto";
+import "mapped/cloud/types/postal_address.proto";
+import "mapped/cloud/types/timeofday.proto";
+import "mapped/ontology/vocab.proto";
+import "mapped/cloud/types/geojson.proto";
+
+
+package mapped.cloud.types;
+
+option java_multiple_files = true;
+option java_package = "com.mapped.cloud.types";
+option csharp_namespace = "Mapped.Cloud.Types";
+option go_package = "go.mapped.dev/pb/cloud/types;types";
+
+message TypedValue {
+    oneof value {
+        bool bool_value = 10;
+        uint32 uint32_value = 11;
+        uint64 uint64_value = 12;
+        int32 int32_value = 13;
+        int64 int64_value = 14;
+        float float32_value = 15;
+        double float64_value = 16;
+        bytes byte_array_value = 17;
+        string string_value = 18;
+        bytes uuid_value = 19;              // must be exactly 16 bytes
+        BoolArray bool_array_value = 20;
+        uint32 enum_value = 21;
+        
+        mapped.cloud.types.Date date_value = 22;
+        mapped.cloud.types.TimeOfDay time_value = 23;
+        google.protobuf.Timestamp timestamp_value = 24;
+        google.protobuf.Struct geojson_value = 25;
+        mapped.ontology.entity_type_key.EntityTypeKey entity_type_value = 26;
+        mapped.ontology.property_key.system_type_key.SystemTypeKey system_type_value = 27;
+        mapped.cloud.types.GeoPoint geopoint_value = 28;
+
+        // Proposed types
+        mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
+        mapped.cloud.types.DayOfWeek day_of_week_value = 101;
+        mapped.cloud.types.Interval interval_value = 102;
+        mapped.cloud.types.Money money_value = 103;
+        mapped.cloud.types.Month month_value = 104;
+        mapped.cloud.types.PhoneNumber phone_number_value = 105;
+        mapped.cloud.types.PostalAddress postal_address_value = 106;
+        mapped.ontology.property_key.scope_key.ScopeKey scope_value = 107;
+        mapped.ontology.property_key.response_key.ResponseKey response_value = 108;
+    }
+}
+
+message TypedValueMap {
+    map<string, TypedValue> map = 1;
+}
+
+message BoolArray {
+    repeated bool values = 1;
+}
