@@ -1,0 +1,10 @@
+version: v1
+plugins:
+  # Python
+  - name: python_betterproto
+    out: packages/python
+    strategy: all # Required for betterproto
+
+  - name: python
+    out: packages/python
+    strategy: all # Required for betterproto

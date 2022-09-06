@@ -1,0 +1,8 @@
+version: v1
+plugins:
+  # Go
+  - name: go
+    out: packages/go/staged
+
+  - name: go-grpc
+    out: packages/go/staged

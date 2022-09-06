@@ -1,0 +1,29 @@
+{
+  "name": "@mapped/pb-browser",
+  "version": "0.0.1",
+  "license": "SEE LICENSE IN LICENSE",
+  "description": "Mapped Platform Service Definitions for browsers using Protocol Buffers",
+  "repository": "github:mapped/pb",
+  "bugs": {
+    "url": "https://github.com/mapped/pb/issues"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "files": [
+    "dist/mapped",
+    "dist/google",
+    "dist/io",
+    "dist/org"
+  ],
+  "dependencies": {
+    "protobufjs": "^6.11.3",
+    "ts-proto-descriptors": "^1.6.0"
+  },
+  "devDependencies": {
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^4.7.4",
+    "rxjs": "^7.5.5"
+  }
+}

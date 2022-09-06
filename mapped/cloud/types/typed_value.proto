@@ -26,7 +26,6 @@ import "mapped/cloud/types/month.proto";
 import "mapped/cloud/types/phone_number.proto";
 import "mapped/cloud/types/postal_address.proto";
 import "mapped/cloud/types/timeofday.proto";
-import "mapped/ontology/vocab.proto";
 import "mapped/cloud/types/geojson.proto";
 
 
@@ -56,8 +55,6 @@ message TypedValue {
         mapped.cloud.types.TimeOfDay time_value = 23;
         google.protobuf.Timestamp timestamp_value = 24;
         google.protobuf.Struct geojson_value = 25;
-        mapped.ontology.entity_type_key.EntityTypeKey entity_type_value = 26;
-        mapped.ontology.property_key.system_type_key.SystemTypeKey system_type_value = 27;
         mapped.cloud.types.GeoPoint geopoint_value = 28;
 
         // Proposed types
@@ -68,8 +65,6 @@ message TypedValue {
         mapped.cloud.types.Month month_value = 104;
         mapped.cloud.types.PhoneNumber phone_number_value = 105;
         mapped.cloud.types.PostalAddress postal_address_value = 106;
-        mapped.ontology.property_key.scope_key.ScopeKey scope_value = 107;
-        mapped.ontology.property_key.response_key.ResponseKey response_value = 108;
     }
 }
 

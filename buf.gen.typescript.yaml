@@ -1,0 +1,13 @@
+version: v1
+plugins:
+  # TypeScript targeting NodeJS
+  - name: ts_proto
+    out: packages/ts-node/src
+    opt: env=node,oneof=unions,stringEnums=true,outputServices=grpc-js,esModuleInterop=true,enumsAsLiterals=true
+    strategy: all
+
+  # TypeScript targeting the browser
+  - name: ts_proto
+    out: packages/ts-browser/src
+    opt: env=browser,oneof=unions,stringEnums=true,outputClientImpl=grpc-web,esModuleInterop=true,enumsAsLiterals=true
+    strategy: all
