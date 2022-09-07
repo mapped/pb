@@ -41,3 +41,4 @@ message RedisPoint {
 	// A zero value (==0) here means there are there were no network errors in the last update to this point
 	uint32 consecutive_network_error_count = 4;
 }
+
