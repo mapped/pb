@@ -275,7 +275,6 @@ jobs:
         working-directory: packages/java
 
       - name: Java - Publish to GitHub Packages
-        if: ${{ github.ref == 'refs/heads/main' }} # Remove after https://app.clickup.com/t/1qe8yda is fixed
         run: mvn -Drevision=${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }} deploy -s settings.xml
         working-directory: packages/java
         env:
