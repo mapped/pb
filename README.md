@@ -32,7 +32,7 @@ string json = Google.Protobuf.JsonFormatter.Default.Format(myMsg.Value.GeojsonVa
 ```
 
 ## Go
-_(Sammples are missing all error checking for brevity)_
+_(Samples are missing all error checking for brevity)_
 
 From GeoJSON to Struct:
 ```go
@@ -41,7 +41,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"go.mapped.dev/proto/cloud"
+	"go.mapped.dev/pb/cloud"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
@@ -72,7 +72,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"go.mapped.dev/proto/cloud"
+	"go.mapped.dev/pb/cloud"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
