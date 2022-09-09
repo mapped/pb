@@ -36,27 +36,28 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>3.19.3</version>
+      <version>3.21.5</version>
     </dependency>
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-netty-shaded</artifactId>
-      <version>1.43.2</version>
+      <version>1.49.0</version>
     </dependency>
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-protobuf</artifactId>
-      <version>1.43.2</version>
+      <version>1.49.0</version>
     </dependency>
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-stub</artifactId>
-      <version>1.43.2</version>
+      <version>1.49.0</version>
     </dependency>
     <dependency>      <!-- necessary for Java 9+ -->
       <groupId>org.apache.tomcat</groupId>
       <artifactId>annotations-api</artifactId>
-      <version>6.0.53</version>
+      <version>
+6.0.53</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -75,7 +76,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>3.10.1</version>
           <configuration>
             <source>1.8</source>
             <target>1.8</target>
@@ -84,7 +85,7 @@
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.0</version>
         </plugin>
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
@@ -93,20 +94,20 @@
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.0.0-M1</version>
+          <version>3.0.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.0.0-M2</version>
+          <version>3.0.0</version>
         </plugin>
         <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.10.0</version>
+          <version>3.12.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.4.1</version>
         </plugin>
       </plugins>
     </pluginManagement>

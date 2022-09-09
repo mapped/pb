@@ -17,7 +17,7 @@
     "dist/org"
   ],
   "dependencies": {
-    "protobufjs": "^6.11.3",
+    "protobufjs": "^7.0.0",
     "ts-proto-descriptors": "^1.6.0"
   },
   "devDependencies": {
