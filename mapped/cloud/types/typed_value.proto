@@ -36,6 +36,20 @@ option java_package = "com.mapped.cloud.types";
 option csharp_namespace = "Mapped.Cloud.Types";
 option go_package = "go.mapped.dev/pb/cloud/types;types";
 
+message ContextDL {
+    string type = 1;
+}
+
+message AnyDL {
+    ContextDL context = 1 [json_name = "@context"];
+    google.protobuf.Struct value = 2;
+
+}
+
+message AnyDLMap {
+    map<string, AnyDL> map = 1;
+}
+
 message TypedValue {
     oneof value {
         bool bool_value = 10;
@@ -56,7 +70,8 @@ message TypedValue {
         google.protobuf.Timestamp timestamp_value = 24;
         google.protobuf.Struct geojson_value = 25;
         mapped.cloud.types.GeoPoint geopoint_value = 28;
-
+        AnyDL any_value = 29;
+        
         // Proposed types
         mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
         mapped.cloud.types.DayOfWeek day_of_week_value = 101;
