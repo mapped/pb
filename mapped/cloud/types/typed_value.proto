@@ -70,7 +70,7 @@ message TypedValue {
         google.protobuf.Timestamp timestamp_value = 24;
         google.protobuf.Struct geojson_value = 25;
         mapped.cloud.types.GeoPoint geopoint_value = 28;
-        AnyDL any_value = 29;
+        AnyDL json = 29;
         
         // Proposed types
         mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
