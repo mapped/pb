@@ -27,7 +27,7 @@ import "mapped/cloud/types/phone_number.proto";
 import "mapped/cloud/types/postal_address.proto";
 import "mapped/cloud/types/timeofday.proto";
 import "mapped/cloud/types/geojson.proto";
-
+import "mapped/common.proto";
 
 package mapped.cloud.types;
 
@@ -42,7 +42,7 @@ message ContextDL {
 
 message AnyDL {
     ContextDL context = 1 [json_name = "@context"];
-    google.protobuf.Struct value = 2;
+    google.protobuf.Struct value = 2 [(graphql_type) = "JSONLD"];
 
 }
 
