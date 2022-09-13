@@ -70,7 +70,7 @@ jobs:
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
-        uses: mapped/action-vtl@v0.2.7
+        uses: mapped/action-vtl@latest
         with:
           baseVersion: ${{ env.BASE_VERSION }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
@@ -141,7 +141,7 @@ jobs:
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
-        uses: mapped/action-vtl@v0.2.7
+        uses: mapped/action-vtl@latest
         with:
           baseVersion: ${{ env.BASE_VERSION }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
@@ -235,7 +235,7 @@ jobs:
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
-        uses: mapped/action-vtl@v0.2.7
+        uses: mapped/action-vtl@latest
         with:
           baseVersion: ${{ env.BASE_VERSION }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
@@ -310,7 +310,7 @@ jobs:
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
-        uses: mapped/action-vtl@v0.2.7
+        uses: mapped/action-vtl@latest
         with:
           baseVersion: ${{ env.BASE_VERSION }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
@@ -388,7 +388,7 @@ jobs:
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
-        uses: mapped/action-vtl@v0.2.7
+        uses: mapped/action-vtl@latest
         with:
           baseVersion: ${{ env.BASE_VERSION }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
