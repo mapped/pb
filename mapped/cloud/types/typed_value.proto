@@ -27,7 +27,6 @@ import "mapped/cloud/types/phone_number.proto";
 import "mapped/cloud/types/postal_address.proto";
 import "mapped/cloud/types/timeofday.proto";
 import "mapped/cloud/types/geojson.proto";
-import "mapped/common.proto";
 
 package mapped.cloud.types;
 
@@ -36,18 +35,19 @@ option java_package = "com.mapped.cloud.types";
 option csharp_namespace = "Mapped.Cloud.Types";
 option go_package = "go.mapped.dev/pb/cloud/types;types";
 
-message ContextDL {
+message ContextLinkedData {
     string type = 1;
 }
 
-message AnyDL {
-    ContextDL context = 1 [json_name = "@context"];
-    google.protobuf.Struct value = 2 [(graphql_type) = "JSONLD"];
+// AnyLinkedData is used to represent JSONLD
+message AnyLinkedData {
+    ContextLinkedData context = 1 [json_name = "@context"];
+    google.protobuf.Struct value = 2;
 
 }
 
-message AnyDLMap {
-    map<string, AnyDL> map = 1;
+message AnyLinkedDataMap {
+    map<string, AnyLinkedData> map = 1;
 }
 
 message TypedValue {
@@ -70,7 +70,7 @@ message TypedValue {
         google.protobuf.Timestamp timestamp_value = 24;
         google.protobuf.Struct geojson_value = 25;
         mapped.cloud.types.GeoPoint geopoint_value = 28;
-        AnyDL json = 29;
+        AnyLinkedData json = 29;
         
         // Proposed types
         mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
