@@ -107,3 +107,4 @@ enum Result {
     ERROR_DEVICE_NO_WRITE_SUPPORT    = 151;
     ERROR_DEVICE_ACCESS_DENIED       = 152;
 }
+
