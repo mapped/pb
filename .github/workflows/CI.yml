@@ -103,7 +103,7 @@ jobs:
         env:
           VERTUPLE: ${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }}
 
-      - name: C# - Publish Package
+      - name: C# - Publish Package (GPR)
         run: dotnet nuget push **/*.nupkg --skip-duplicate
         working-directory: ./packages/csharp/Mapped.PB
         env:
@@ -111,6 +111,10 @@ jobs:
           # and https://github.com/NuGet/Home/issues/2627
           # and https://github.com/actions/setup-dotnet/issues/101
           DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER: 0
+
+      - name: C# - Publish Package (NuGet)
+        run: dotnet nuget push **/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_PB_PUSH}}
+        working-directory: ./packages/csharp/Mapped.PB
 
   build-go:
     runs-on: ubuntu-latest
