@@ -28,6 +28,7 @@ import "mapped/cloud/types/postal_address.proto";
 import "mapped/cloud/types/timeofday.proto";
 import "mapped/cloud/types/geojson.proto";
 
+
 package mapped.cloud.types;
 
 option java_multiple_files = true;
