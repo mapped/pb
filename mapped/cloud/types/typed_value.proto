@@ -72,6 +72,7 @@ message TypedValue {
         google.protobuf.Struct geojson_value = 25;
         mapped.cloud.types.GeoPoint geopoint_value = 28;
         AnyLinkedData json = 29;
+        GenericTypedMap map_value = 30;
         
         // Proposed types
         mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
@@ -86,6 +87,14 @@ message TypedValue {
 
 message TypedValueMap {
     map<string, TypedValue> map = 1;
+}
+
+message GenericTypedMap {
+    message Entry {
+        TypedValue key = 1;
+        TypedValue value = 2;
+    }
+    repeated Entry entries = 1;
 }
 
 message BoolArray {
