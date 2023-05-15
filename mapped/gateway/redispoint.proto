@@ -25,7 +25,6 @@ option java_package = "com.mapped.gateway";
 option csharp_namespace = "Mapped.Gateway";
 option go_package = "go.mapped.dev/pb/gateway;gateway";
 
-
 // RedisPoint is used for edge present value streams in Redis
 message RedisPoint {
 	// The present value of this point
