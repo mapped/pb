@@ -40,4 +40,8 @@ message RedisPoint {
 	// A count of how many consecutive network errors have been observed since `network_error_start`
 	// A zero value (==0) here means there are there were no network errors in the last update to this point
 	uint32 consecutive_network_error_count = 4;
+
+	// If this point has changed mappingKeys, likely because of an IP change, this will contain the new
+	// mappingKey and last_update will be the timestamp of when the mappingKey changed.
+	string new_mapping_key = 5;
 }
