@@ -44,7 +44,6 @@ message ContextLinkedData {
 message AnyLinkedData {
     ContextLinkedData context = 1 [json_name = "@context"];
     google.protobuf.Struct value = 2;
-
 }
 
 message AnyLinkedDataMap {
