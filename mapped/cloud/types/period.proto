@@ -1,0 +1,57 @@
+// Copyright 2020 Google LLC
+// Copyright 2022 Mapped Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package mapped.cloud.types;
+
+option cc_enable_arenas = true;
+option java_multiple_files = true;
+option java_package = "com.mapped.cloud.types";
+option csharp_namespace = "Mapped.Cloud.Types";
+option go_package = "go.mapped.dev/pb/cloud/types;types";
+
+// Represents a period of time.
+message Period {  
+  int32 count = 1;
+  
+  PeriodIncrement increment = 2;
+}
+
+enum PeriodIncrement {
+  // No increment.
+  PERIOD_INCREMENT_UNSPECIFIED = 0;
+
+  // Increment by 1 second.
+  PERIOD_INCREMENT_SECOND = 1;
+
+  // Increment by 1 minute.
+  PERIOD_INCREMENT_MINUTE = 2;
+
+  // Increment by 1 hour.
+  PERIOD_INCREMENT_HOUR = 3;
+
+  // Increment by 1 day.
+  PERIOD_INCREMENT_DAY = 4;
+
+  // Increment by 1 week.
+  PERIOD_INCREMENT_WEEK = 5;
+
+  // Increment by 1 month.
+  PERIOD_INCREMENT_MONTH = 6;
+
+  // Increment by 1 year.
+  PERIOD_INCREMENT_YEAR = 7;
+}
