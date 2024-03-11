@@ -196,7 +196,7 @@ jobs:
           # cloud package uses cloudevents/sdk-go
           CLOUD_GO_MOD="cloud/go.mod"
           echo "" >> ${CLOUD_GO_MOD}
-          echo "require github.com/cloudevents/sdk-go/v2 v2.3.1" >> ${CLOUD_GO_MOD}
+          echo "require github.com/cloudevents/sdk-go/v2 v2.15.2" >> ${CLOUD_GO_MOD}
 
           # Push to pb-go
           git config --global user.email "buildpipeline@mapped.com"
