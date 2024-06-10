@@ -17,7 +17,7 @@
     "org"
   ],
   "dependencies": {
-    "@grpc/grpc-js": "^1.6.7",
+    "@grpc/grpc-js": "^1.8.22",
     "protobufjs": "^7.2.5",
     "ts-proto": "^1.123.1",
     "ts-proto-descriptors": "^1.6.0"
