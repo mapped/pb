@@ -17,7 +17,6 @@ syntax = "proto3";
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
 import "mapped/cloud/types/calendar_period.proto";
 import "mapped/cloud/types/date.proto";
 import "mapped/cloud/types/dayofweek.proto";
@@ -51,6 +50,20 @@ message AnyLinkedDataMap {
     map<string, AnyLinkedData> map = 1;
 }
 
+// We don't support floating points for those fields because they are vulnerable to precision loss when converting to/from JSON/other langauges.
+// Practially we don't want to allow 0.5 years of 0.3 months while fine-grained seconds are representd in milliseconds and nanoseconds.
+message IsoDuration {
+  int32 years = 1;
+  int32 months = 2;
+  int32 weeks = 3;
+  int32 days = 4;
+  int32 hours = 5;
+  int32 minutes = 6;
+  int32 seconds = 7;
+  int32 milliseconds = 8;
+  int32 nanoseconds = 9;
+}
+
 message TypedValue {
     oneof value {
         bool bool_value = 10;
@@ -73,7 +86,7 @@ message TypedValue {
         mapped.cloud.types.GeoPoint geopoint_value = 28;
         AnyLinkedData json = 29;
         GenericTypedMap map_value = 30;
-        google.protobuf.Duration duration_value = 31;
+        IsoDuration duration_value = 31;
         
         // Proposed types
         mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
