@@ -17,6 +17,7 @@ syntax = "proto3";
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 import "mapped/cloud/types/calendar_period.proto";
 import "mapped/cloud/types/date.proto";
 import "mapped/cloud/types/dayofweek.proto";
@@ -72,6 +73,7 @@ message TypedValue {
         mapped.cloud.types.GeoPoint geopoint_value = 28;
         AnyLinkedData json = 29;
         GenericTypedMap map_value = 30;
+        google.protobuf.Duration duration_value = 31;
         
         // Proposed types
         mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
