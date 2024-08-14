@@ -22,6 +22,7 @@ import "mapped/cloud/types/date.proto";
 import "mapped/cloud/types/dayofweek.proto";
 import "mapped/cloud/types/interval.proto";
 import "mapped/cloud/types/money.proto";
+import "mapped/cloud/types/iso_duration.proto";
 import "mapped/cloud/types/month.proto";
 import "mapped/cloud/types/phone_number.proto";
 import "mapped/cloud/types/postal_address.proto";
@@ -48,20 +49,6 @@ message AnyLinkedData {
 
 message AnyLinkedDataMap {
     map<string, AnyLinkedData> map = 1;
-}
-
-// We don't support floating points for those fields because they are vulnerable to precision loss when converting to/from JSON/other langauges.
-// Practially we don't want to allow 0.5 years of 0.3 months while fine-grained seconds are representd in milliseconds and nanoseconds.
-message IsoDuration {
-  int32 years = 1;
-  int32 months = 2;
-  int32 weeks = 3;
-  int32 days = 4;
-  int32 hours = 5;
-  int32 minutes = 6;
-  int32 seconds = 7;
-  int32 milliseconds = 8;
-  int32 nanoseconds = 9;
 }
 
 message TypedValue {
