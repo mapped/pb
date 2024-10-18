@@ -150,7 +150,7 @@ jobs:
           baseVersion: ${{ env.BASE_VERSION }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: shaunco/ssh-agent@git-repo-mapping
+      - uses: mapped/ssh-agent@git-repo-mapping
         with:
           ssh-private-key: |
             ${{ secrets.SSH_PB_GO_WRITE }}
