@@ -16,6 +16,7 @@
 syntax = "proto3";
 
 import "mapped/cloud/types/typed_value.proto";
+import "mapped/types/control.proto";
 
 package mapped.gateway;
 
@@ -71,7 +72,7 @@ message MappingKeyAndResult {
     string mapping_key = 1;
 
     // The result code
-    Result result = 2;
+    mapped.types.ControlResult result = 2;
 
     // Error description (if available)
     string error_description = 3;
@@ -82,29 +83,3 @@ message MappingKeyAndResult {
     // Protocol-specific error code
     int64 protocol_error_code = 5;
 }
-
-enum Result {
-    RESULT_UNSPECIFIED               = 0;
-
-    // Success codes (1-99)
-    SUCCESS                          = 1;
-
-    // Error codes (100+)
-    ERROR_UNKNOWN                    = 100;
-    ERROR_UNKNOWN_MAPPING_KEY        = 101;
-    ERROR_TIMEOUT                    = 103;
-    ERROR_HOST_UNREACHABLE           = 104;
-
-    ERROR_VALUE_TYPE_CHANGE          = 120;
-    ERROR_VALUE_ARRAY_INDEX_INVALID  = 121;
-    ERROR_VALUE_TYPE_INVALID         = 122;
-    ERROR_VALUE_TYPE_UNSUPPORTED     = 123;
-    ERROR_VALUE_NOT_ARRAY            = 124;
-    ERROR_VALUE_OUT_OF_RANGE         = 125;
-    ERROR_VALUE_WRITE_ACCESS_DENIED  = 126;
-
-    ERROR_DEVICE_OTHER               = 150;
-    ERROR_DEVICE_NO_WRITE_SUPPORT    = 151;
-    ERROR_DEVICE_ACCESS_DENIED       = 152;
-}
-
