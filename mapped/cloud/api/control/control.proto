@@ -26,27 +26,23 @@ option java_package = "com.mapped.api.control";
 option csharp_namespace = "Mapped.Control";
 option go_package = "go.mapped.dev/pb/control;control";
 
-message WritePropsRequest {
+message WritePropRequest {
     // The property value(s) to write
-    repeated PointReferenceAndValue values = 1;
+    PointReferenceAndValue payload = 1;
 
-    // The timeout for each request to each subtended device in milliseconds
-    // NOTE: UGAgent makes every attempt to parallelize these, but some devices don't support
-    //       writing multiple properties at once, which means write requests must be serialized
-    uint32 timeout_per_device_in_ms = 2;
 
     // Simulate the command by only validating the input and logging
-    // do not send actual commands over the wire
+    // do not send an actual command over the wire
     bool simulate = 100;
 }
 
-message WritePropsResponse {
+message WritePropResponse {
     // The unique ID of this request to be provided to Mapped Support
     // for troubleshooting in the case of unexpected errors
     string request_id = 1;
 
     // The result of each property write
-    repeated PointReferenceAndResult results = 2;
+    PointReferenceAndResult payload = 2;
 }
 
 message PointReferenceAndValue {

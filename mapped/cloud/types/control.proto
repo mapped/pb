@@ -46,5 +46,9 @@ enum ControlResult {
     ERROR_DEVICE_OTHER               = 150;
     ERROR_DEVICE_NO_WRITE_SUPPORT    = 151;
     ERROR_DEVICE_ACCESS_DENIED       = 152;
+
+    // Client Validation errors (400+)
+    ERROR_BAD_REQUEST                = 400;
+
 }
 
