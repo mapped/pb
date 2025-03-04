@@ -15,12 +15,13 @@
 // ******************************************************************************************************
 syntax = "proto3";
 
-package mapped.types;
+package mapped.cloud.types;
 
+option cc_enable_arenas = true;
 option java_multiple_files = true;
-option java_package = "com.mapped.types";
-option csharp_namespace = "Mapped.Types";
-option go_package = "go.mapped.dev/pb/types;types";
+option java_package = "com.mapped.cloud.types";
+option csharp_namespace = "Mapped.Cloud.Types";
+option go_package = "go.mapped.dev/pb/cloud/types;types";
 
 enum ControlResult {
     RESULT_UNSPECIFIED               = 0;

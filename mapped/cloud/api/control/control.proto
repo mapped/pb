@@ -17,7 +17,7 @@ syntax = "proto3";
 
 
 import "mapped/cloud/types/typed_value.proto";
-import "mapped/types/control.proto";
+import "mapped/cloud/types/control.proto";
 
 package mapped.cloud.api.control;
 
@@ -63,7 +63,7 @@ message PointReferenceAndResult {
     string point_reference_id = 1;
 
     // The result code
-    mapped.types.ControlResult result = 2;
+    mapped.cloud.types.ControlResult result = 2;
 
     // Error description (if available)
     string error_description = 3;

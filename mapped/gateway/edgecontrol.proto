@@ -16,7 +16,7 @@
 syntax = "proto3";
 
 import "mapped/cloud/types/typed_value.proto";
-import "mapped/types/control.proto";
+import "mapped/cloud/types/control.proto";
 
 package mapped.gateway;
 
@@ -72,7 +72,7 @@ message MappingKeyAndResult {
     string mapping_key = 1;
 
     // The result code
-    mapped.types.ControlResult result = 2;
+    mapped.cloud.types.ControlResult result = 2;
 
     // Error description (if available)
     string error_description = 3;
