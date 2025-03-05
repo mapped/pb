@@ -15,16 +15,18 @@
 // ******************************************************************************************************
 syntax = "proto3";
 
-
-import "mapped/cloud/types/typed_value.proto";
-import "mapped/cloud/types/control.proto";
-
 package mapped.cloud.api.control;
 
 option java_multiple_files = true;
-option java_package = "com.mapped.api.control";
-option csharp_namespace = "Mapped.Control";
-option go_package = "go.mapped.dev/pb/control;control";
+option java_package = "com.mapped.cloud.api.control";
+option csharp_namespace = "Mapped.Cloud.Api.Control";
+option go_package = "go.mapped.dev/pb/cloud/api/control;control";
+option (graphql_prefix) = "Control";
+
+import "mapped/common.proto";
+import "mapped/cloud/types/typed_value.proto";
+import "mapped/cloud/types/control.proto";
+
 
 message WritePropRequest {
     // The property value(s) to write

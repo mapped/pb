@@ -15,15 +15,22 @@
 // ******************************************************************************************************
 syntax = "proto3";
 
-import "mapped/cloud/types/typed_value.proto";
-import "mapped/cloud/types/control.proto";
-
 package mapped.gateway;
 
 option java_multiple_files = true;
 option java_package = "com.mapped.gateway";
 option csharp_namespace = "Mapped.Gateway";
 option go_package = "go.mapped.dev/pb/gateway;gateway";
+option (graphql_prefix) = "Gateway";
+
+
+import "mapped/common.proto";
+import "mapped/cloud/types/typed_value.proto";
+import "mapped/cloud/types/codes.proto";
+//import "mapped/cloud/types/control.proto";
+
+//import "mapped/gateway/control.proto";
+
 
 // Mapped client connector auth service.
 // gtm:ignore
@@ -72,8 +79,10 @@ message MappingKeyAndResult {
     string mapping_key = 1;
 
     // The result code
-    mapped.cloud.types.ControlResult result = 2;
+   // mapped.cloud.types.ControlResult result = 2;
+    mapped.cloud.types.Code result = 2;
 
+    
     // Error description (if available)
     string error_description = 3;
 
