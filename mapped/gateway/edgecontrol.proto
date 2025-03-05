@@ -21,10 +21,7 @@ option java_multiple_files = true;
 option java_package = "com.mapped.gateway";
 option csharp_namespace = "Mapped.Gateway";
 option go_package = "go.mapped.dev/pb/gateway;gateway";
-option (graphql_prefix) = "Gateway";
 
-
-import "mapped/common.proto";
 import "mapped/cloud/types/typed_value.proto";
 import "mapped/cloud/types/control.proto";
 
