@@ -46,7 +46,8 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-protobuf</artifactId>
-      <version>1.53.0</version>
+      <version>
+1.56.1</version>
     </dependency>
     <dependency>
       <groupId>io.grpc</groupId>
@@ -98,7 +99,8 @@
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>
+3.1.0</version>
         </plugin>
         <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
         <plugin>

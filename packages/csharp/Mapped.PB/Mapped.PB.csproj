@@ -8,7 +8,7 @@
     <Authors>Mapped</Authors>
     <Product>Mapped.PB</Product>
     <Description>Mapped public protobufs</Description>
-    <Copyright>(c) 2022 Mapped</Copyright>
+    <Copyright>(c) 2025 Mapped</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>icon.jpg</PackageIcon>
     <AssemblyName>Mapped.PB</AssemblyName>

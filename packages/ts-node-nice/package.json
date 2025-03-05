@@ -1,5 +1,5 @@
 {
-  "name": "@mapped/pb-node",
+  "name": "@mapped/pb-node-nice",
   "version": "0.0.1",
   "license": "SEE LICENSE IN LICENSE",
   "description": "Mapped Platform Service Definitions for nodejs using Protocol Buffers",
@@ -14,16 +14,21 @@
     "google",
     "io",
     "mapped",
-    "org"
+    "org",
+    "protoset.bin"
   ],
   "dependencies": {
     "@grpc/grpc-js": "^1.12.2",
     "protobufjs": "^7.4.0",
     "ts-proto": "^2.2.5",
-    "ts-proto-descriptors": "^2.0.0"
+    "ts-proto-descriptors": "^2.0.0",
+    "long": "^5.2.3",
+    "nice-grpc": "^2.1.9",
+    "nice-grpc-common": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
+    "@types/long": "^5.0.0",
     "typescript": "^5.5.4"
   },
   "typesVersions": {

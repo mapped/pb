@@ -6,7 +6,7 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["esnext", "DOM"],
     "module": "commonjs",
-    "target": "es5",
+    "target": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "downlevelIteration": true,
@@ -16,19 +16,20 @@
 
     // Project settings
     "rootDir": "src",
-    "outDir": "dist",
+    "outDir": "",
 
     "sourceMap": false,
     "preserveConstEnums": true,
 
     // Enforcement
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "strictFunctionTypes": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "isolatedModules": true
   }
 }

@@ -1,7 +1,7 @@
 version: v1
 lint:
   use:
-    - DEFAULT
+    - STANDARD
     - FILE_LOWER_SNAKE_CASE
   except:
     - ENUM_VALUE_PREFIX
