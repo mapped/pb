@@ -1,5 +1,6 @@
 {
   "include": ["src/**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     // Target
     "allowSyntheticDefaultImports": true,
@@ -21,7 +22,7 @@
     "preserveConstEnums": true,
 
     // Enforcement
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

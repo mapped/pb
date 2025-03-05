@@ -13,9 +13,9 @@ packages = [
     ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-betterproto = "2.0.0b5"
-grpclib = "0.4.3"
+python = ">=3.8,<4.0"
+protobuf = "^4.21.7"
+betterproto = {version = "^2.0.0b6", allow-prereleases = true}
 
 [tool.poetry.dev-dependencies]
 

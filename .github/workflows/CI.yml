@@ -25,6 +25,10 @@ env:
   GO111MODULE: "on"
   BASE_VERSION: "0.2.0"
 
+permissions:
+  contents: write # To create version tags
+  packages: write
+
 jobs:
   # Lint
   lint:
@@ -35,7 +39,7 @@ jobs:
       - uses: actions/checkout@v3.0.2
       - uses: ory/build-buf-action@v0.0.10
         with:
-          bufVersion: v1.7.0
+          bufVersion: v1.46.0
           bufArgs: lint --config buf.yaml
 
   build-csharp:
@@ -45,6 +49,14 @@ jobs:
       #
       # Enironment Setup
       #
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y wget ca-certificates
+          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+          rm libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+
       - name: Pull Source
         uses: actions/checkout@v3.0.2
 
@@ -64,9 +76,10 @@ jobs:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Setting Up protoc
-        uses: arduino/setup-protoc@v1
+        uses: arduino/setup-protoc@v3
         with:
-          version: "3.x"
+          version: "28.3"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
@@ -89,24 +102,29 @@ jobs:
       - name: C# - Restoring NuGet Packages
         run: dotnet restore
         working-directory: ./packages/csharp/Mapped.PB
+        env:
+          DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
 
       - name: C# - Building .NET Standard Library
         run: |
           dotnet build --configuration $DOTNET_BUILD_CONFIG -p:AssemblyVersion=$VERTUPLE -p:FileVersion=$VERTUPLE -p:RepositoryUrl=https://github.com/${{ github.repository }} -p:RepositoryType=git -p:RepositoryBranch=${{ github.ref }} -p:RepositoryCommit=${{ github.sha }}
         working-directory: ./packages/csharp/Mapped.PB
         env:
+          DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
           VERTUPLE: ${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }}
 
       - name: C# - Packing .NET Standard NuGet Package
         run: dotnet pack --configuration $DOTNET_BUILD_CONFIG --no-build --include-source --include-symbols --version-suffix ${{ steps.vtl.outputs.ver_buildNumber }} -p:Version=$VERTUPLE -p:RepositoryUrl=https://github.com/${{ github.repository }} -p:RepositoryType=git -p:RepositoryBranch=${{ github.ref }} -p:RepositoryCommit=${{ github.sha }}
         working-directory: ./packages/csharp/Mapped.PB
         env:
+          DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
           VERTUPLE: ${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }}
 
       - name: C# - Publish Package (GPR)
         run: dotnet nuget push **/*.nupkg --skip-duplicate
         working-directory: ./packages/csharp/Mapped.PB
         env:
+          DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
           # see https://github.community/t/github-package-registry-not-compatible-with-dotnet-nuget-client/14392/11
           # and https://github.com/NuGet/Home/issues/2627
           # and https://github.com/actions/setup-dotnet/issues/101
@@ -134,14 +152,15 @@ jobs:
         run: echo "name=${{ steps.get-branch.outputs.branch }} - tag=${{ steps.get-branch.outputs.tag }}"
 
       - name: Setting Up go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
-          go-version: "^1.19"
+          go-version: "1.24"
 
       - name: Setting Up protoc
-        uses: arduino/setup-protoc@v1
+        uses: arduino/setup-protoc@v2
         with:
-          version: "3.x"
+          version: "29.3"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
@@ -169,8 +188,8 @@ jobs:
       - name: Transpile .proto files
         uses: ory/build-buf-action@v0.0.10
         with:
-          bufVersion: v1.7.0
-          protocPlugins: go@v1.28.1 go-grpc@v1.2.0
+          bufVersion: v1.46.0
+          protocPlugins: go@v1.32.0 go-grpc@v1.3.0
           bufArgs: generate --config buf.yaml --template buf.gen.go.yaml
 
       #
@@ -235,7 +254,8 @@ jobs:
       - name: Setting Up protoc
         uses: arduino/setup-protoc@v1
         with:
-          version: "3.x"
+          version: "3.19.4" # NOTE: Fix the protoc version due to https://github.com/protocolbuffers/protobuf/issues/10695
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
@@ -256,7 +276,7 @@ jobs:
       - name: Transpile .proto files
         uses: ory/build-buf-action@v0.0.10
         with:
-          bufVersion: v1.7.0
+          bufVersion: v1.46.0
           protocPlugins: grpc-java@1.49.0
           bufArgs: generate --config buf.yaml --template buf.gen.java.yaml
 
@@ -266,8 +286,8 @@ jobs:
       - name: Java - Set up AdoptOpenJDK Hotspot 16
         uses: actions/setup-java@v3
         with:
-          java-version: 16
-          distribution: 'adopt-hotspot'
+          java-version: 17
+          distribution: "adopt-hotspot"
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }}/packages/java # location for the settings.xml file
 
@@ -276,11 +296,12 @@ jobs:
         working-directory: packages/java
 
       - name: Java - Build with Maven
-        run: mvn -Drevision=${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }} -B package --file pom.xml
+        run: mvn -Dmaven.resolver.transport=wagon -Drevision=${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }} -B package --file pom.xml
         working-directory: packages/java
 
       - name: Java - Publish to GitHub Packages
-        run: mvn -Drevision=${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }} deploy -s settings.xml
+        if: ${{ github.ref == 'refs/heads/main' }} # Remove after https://app.clickup.com/t/1qe8yda is fixed
+        run: mvn -Dmaven.resolver.transport=wagon -Drevision=${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }} deploy -s settings.xml -X
         working-directory: packages/java
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -311,6 +332,7 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: "3.x"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
@@ -379,16 +401,17 @@ jobs:
       - name: Echo outputs
         run: echo "name=${{ steps.get-branch.outputs.branch }} - tag=${{ steps.get-branch.outputs.tag }}"
 
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20.x
           registry-url: https://npm.pkg.github.com/
 
       - name: Setting Up protoc
-        uses: arduino/setup-protoc@v1
+        uses: arduino/setup-protoc@v3
         with:
-          version: "3.x"
+          version: "28.3"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Establish Versioning, Tags, and Labels
         id: vtl
@@ -409,8 +432,8 @@ jobs:
       - name: Transpile .proto files
         uses: ory/build-buf-action@v0.0.10
         with:
-          bufVersion: v1.7.0
-          protocPlugins: ts-proto@1.125.0
+          bufVersion: v1.46.0
+          protocPlugins: ts-proto@2.2.5
           bufArgs: generate --config buf.yaml --template buf.gen.typescript.yaml
 
       #
@@ -427,7 +450,7 @@ jobs:
       - name: Compile TS -> JS files
         run: |
           tsc --version
-          tsc -p tsconfig.json
+          node --max-old-space-size=4096 node_modules/typescript/bin/tsc -p tsconfig.json
         working-directory: ./packages/ts-node
 
       - name: Copy TS into the /dist folder (GAMBIARRA)
@@ -444,6 +467,46 @@ jobs:
         working-directory: ./packages/ts-node
 
       #
+      # TypeScript For NodeJS (Nice)
+      #
+      # Generate protoset.bin file (used for server reflection)
+      - name: Generate protoset.bin file
+        run: |
+          protoc -I ./ --descriptor_set_out=./packages/ts-node-nice/protoset.bin --include_imports $(find ./mapped -name "*.proto")
+
+      - name: TS-Node-Nice - Install Packages
+        run: npm install --ignore-scripts
+        working-directory: ./packages/ts-node-nice
+
+      - name: TS-Node-Nice - Update Package Version
+        run: npm version v${{ steps.vtl.outputs.ver_semVerNoMeta }} --allow-same-version
+        working-directory: ./packages/ts-node-nice
+
+      - name: Compile TS -> JS files
+        run: |
+          tsc --version
+          node --max-old-space-size=4096 node_modules/typescript/bin/tsc -p tsconfig.json
+        working-directory: ./packages/ts-node-nice
+
+      - name: Copy TS into the /dist folder (GAMBIARRA)
+        run: |
+          ls -lh
+          cp -R ./src/. ./.
+        working-directory: ./packages/ts-node-nice
+
+      - name: TS-Node-Nice - Publishing Package
+        run: npm publish --access restricted
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_OPTIONS: --max_old_space_size=4096
+        working-directory: ./packages/ts-node-nice
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ts-node
+      #     path: ./packages/ts-node
+
+      #
       # TypeScript For Browsers
       #
       - name: TS-Browser - Install Packages
@@ -457,7 +520,7 @@ jobs:
       - name: Compile TS -> JS files
         run: |
           tsc --version
-          tsc -p tsconfig.json
+          node --max-old-space-size=4096 node_modules/typescript/bin/tsc -p tsconfig.json
         working-directory: ./packages/ts-browser
 
       - name: Copy TS into the /dist folder (GAMBIARRA)

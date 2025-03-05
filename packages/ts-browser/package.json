@@ -10,6 +10,9 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
+  "scripts": {
+    "build": "npx tsc"
+  },
   "files": [
     "dist/mapped",
     "dist/google",
@@ -17,13 +20,12 @@
     "dist/org"
   ],
   "dependencies": {
-    "protobufjs": "^7.2.5",
-    "ts-proto-descriptors": "^1.6.0"
+    "ts-proto": "^2.2.5"
   },
   "devDependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
     "@types/node": "^18.0.0",
-    "typescript": "^4.7.4",
+    "typescript": "^5.6.3",
     "rxjs": "^7.5.5"
   }
 }
