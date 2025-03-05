@@ -13,17 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ******************************************************************************************************
+
+
 syntax = "proto3";
 
-// IMPORTANT: keep this file in sycn with mapped/cloud/types/control.proto, we have an yet to be resolved issue with the go package path
-package mapped.gateway;
+package mapped.cloud.types;
 
+option cc_enable_arenas = true;
 option java_multiple_files = true;
-option java_package = "com.mapped.gateway";
-option csharp_namespace = "Mapped.Gateway";
-option go_package = "go.mapped.dev/pb/gateway;gateway";
+option java_package = "com.mapped.cloud.types";
+option csharp_namespace = "Mapped.Cloud.Types";
+option go_package = "go.mapped.dev/pb/cloud/types;types";
 
- 
+
 enum ControlResult {
     CONTROLRESULT_UNSPECIFIED        = 0;
 
@@ -52,4 +54,3 @@ enum ControlResult {
     CONTROLRESULT_ERROR_BAD_REQUEST                = 400;
 
 }
-

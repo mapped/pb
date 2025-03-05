@@ -26,11 +26,7 @@ option (graphql_prefix) = "Gateway";
 
 import "mapped/common.proto";
 import "mapped/cloud/types/typed_value.proto";
-import "mapped/cloud/types/codes.proto";
-//import "mapped/cloud/types/control.proto";
-
-//import "mapped/gateway/control.proto";
-
+import "mapped/cloud/types/control.proto";
 
 // Mapped client connector auth service.
 // gtm:ignore
@@ -80,7 +76,7 @@ message MappingKeyAndResult {
 
     // The result code
    // mapped.cloud.types.ControlResult result = 2;
-    mapped.cloud.types.Code result = 2;
+    mapped.cloud.types.ControlResult result = 2;
 
     
     // Error description (if available)
