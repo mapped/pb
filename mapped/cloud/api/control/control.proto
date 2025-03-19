@@ -39,7 +39,7 @@ message WritePropResponse {
     // The unique ID of this request to be provided to Mapped Support
     // for troubleshooting in the case of unexpected errors
     string request_id = 1;
-
+  
     // The result of each property write
     PointReferenceAndResult payload = 2;
 }
