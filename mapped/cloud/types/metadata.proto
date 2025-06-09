@@ -23,6 +23,8 @@ option java_package = "com.mapped.cloud.types";
 option csharp_namespace = "Mapped.Cloud.Types";
 option go_package = "go.mapped.dev/pb/cloud/types;types";
 
+import "mapped/cloud/types/filter.proto";
+
 message MetadataRecord {
   string key = 1;
   string value = 2;
@@ -44,3 +46,10 @@ message MetadataUpdate {
     }
 }
  
+message MetadataRecordExpression {
+    option (filter_expression) = true;
+    option (allow_multi) = true;
+
+    MetadataRecord eq     = 1 [(op) = OP_EQ_ELEM_MATCH];
+    MetadataRecord ne     = 2 [(op) = OP_NE_ELEM_MATCH];
+}
