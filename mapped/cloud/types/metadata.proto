@@ -46,7 +46,7 @@ message MetadataUpdate {
     }
 }
  
-message MetadataRecordExpression {
+message MetadataRecordFilterExpression {
   option (filter_expression) = true;
   option (filter_elem_match) = true;    // This is the key part.
 
