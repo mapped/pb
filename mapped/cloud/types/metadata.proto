@@ -47,9 +47,11 @@ message MetadataUpdate {
 }
  
 message MetadataRecordExpression {
-    option (filter_expression) = true;
-    option (allow_multi) = true;
+  option (filter_expression) = true;
+  option (filter_elem_match) = true;    // This is the key part.
 
-    MetadataRecord eq     = 1 [(op) = OP_EQ_ELEM_MATCH];
-    MetadataRecord ne     = 2 [(op) = OP_NE_ELEM_MATCH];
+  StringFilterExpression key = 1;
+  StringFilterExpression value = 2;
+
 }
+
