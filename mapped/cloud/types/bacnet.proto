@@ -41,4 +41,7 @@ enum BacnetObjectType {
     MULTISTATE_VALUE = 16;
 
 
+    TREND_LOG = 21;
+
+
 }
