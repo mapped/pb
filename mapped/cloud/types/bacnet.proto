@@ -40,6 +40,9 @@ enum BacnetObjectType {
     MULTISTATE_OUTPUT = 15;
     MULTISTATE_VALUE = 16;
 
+    PROGRAM = 17;
+    SCHEDULE = 18;
+
 
     TREND_LOG = 21;
 
