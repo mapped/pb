@@ -38,7 +38,7 @@ enum BacnetObjectType {
 
     MULTISTATE_INPUT = 14;
     MULTISTATE_OUTPUT = 15;
-    MULTISTATE_VALUE = 16;
+    MULTISTATE_VALUE = 20;
 
     PROGRAM = 17;
     SCHEDULE = 18;
