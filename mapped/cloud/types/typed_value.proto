@@ -53,6 +53,8 @@ message AnyLinkedDataMap {
 
 message TypedValue {
     oneof value {
+        google.protobuf.NullValue null_value = 1;
+
         bool bool_value = 10;
         uint32 uint32_value = 11;
         uint64 uint64_value = 12;

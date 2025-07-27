@@ -24,6 +24,7 @@ option go_package = "go.mapped.dev/pb/gateway;gateway";
 
 import "mapped/cloud/types/typed_value.proto";
 import "mapped/cloud/types/control.proto";
+import "google/protobuf/wrappers.proto";
 
 // Mapped client connector auth service.
 // gtm:ignore
@@ -64,7 +65,15 @@ message MappingKeyAndValue {
 
     // The value read or to be written 
     // NOTE: The value *type* must NOT change type between a read and a write
+    //       with the exception of null values, when allowed for the target
     mapped.cloud.types.TypedValue value = 2;
+
+    // [optional]
+    // If writing to a single array index, this is the ZERO-BASED index to write to
+    //  - For BACnet, this can be either a priority or an array index - but note that it is zero-based
+    //    vs BACnet which is one-based (zero in BACnet is the array length), so passing 0 here will write 
+    //    to BACnet priority 1, and passing 1 here will write to BACnet priority 2, etc...
+    google.protobuf.UInt32Value index = 10;
 }
 
 message MappingKeyAndResult {
@@ -72,9 +81,7 @@ message MappingKeyAndResult {
     string mapping_key = 1;
 
     // The result code
-   // mapped.cloud.types.ControlResult result = 2;
     mapped.cloud.types.ControlResult result = 2;
-
     
     // Error description (if available)
     string error_description = 3;
