@@ -24,7 +24,7 @@ option go_package = "go.mapped.dev/pb/cloud/api/control;control";
 
 import "mapped/cloud/types/typed_value.proto";
 import "mapped/cloud/types/control.proto";
-
+import "google/protobuf/wrappers.proto";
 
 message WritePropRequest {
     // The property value(s) to write
@@ -51,6 +51,14 @@ message PointReferenceAndValue {
     // The value read or to be written 
     // NOTE: The value *type* must NOT change type between a read and a write
     mapped.cloud.types.TypedValue value = 2;
+
+    // [optional]
+    // If writing to a single array index, this is the ZERO-BASED index to write to
+    //  - For BACnet, this can be either a priority or an array index - but note that it is zero-based
+    //    vs BACnet which is one-based (zero in BACnet is the array length), so passing 0 here will write 
+    //    to BACnet priority 1, and passing 1 here will write to BACnet priority 2, etc...
+    google.protobuf.UInt32Value index = 10;
+
 }
 
 message PointReferenceAndResult {
