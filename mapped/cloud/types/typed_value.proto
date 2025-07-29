@@ -28,6 +28,7 @@ import "mapped/cloud/types/phone_number.proto";
 import "mapped/cloud/types/postal_address.proto";
 import "mapped/cloud/types/timeofday.proto";
 import "mapped/cloud/types/geojson.proto";
+import "mapped/cloud/files/mimetype.proto";
 
 
 package mapped.cloud.types;
@@ -85,6 +86,7 @@ message TypedValue {
         mapped.cloud.types.Month month_value = 104;
         mapped.cloud.types.PhoneNumber phone_number_value = 105;
         mapped.cloud.types.PostalAddress postal_address_value = 106;
+        mapped.cloud.files.MimeType mime_type_value = 117;
     }
 }
 
