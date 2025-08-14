@@ -1,0 +1,126 @@
+// ******************************************************************************************************
+// Copyright 2022 Mapped Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ******************************************************************************************************
+syntax = "proto3";
+
+package mapped;
+
+import "google/protobuf/descriptor.proto";
+
+option java_multiple_files = true;
+option java_package = "com.mapped";
+option csharp_namespace = "Mapped";
+option go_package = "go.mapped.dev/pb;proto";
+
+extend google.protobuf.EnumValueOptions {
+  string name = 12345;
+}
+
+extend google.protobuf.FieldOptions {
+  // All fields are assumed PII unless this option is set
+  bool not_pii = 50000;
+
+  // For PII fields, minimum time to live (MTL) in days. Default && minimum == 30
+  int32 pii_mtl = 50001;
+
+  // Marks the method as being internal and not intended for customer use
+  bool graphql_ignore = 50100;
+
+  // Marks the field type intended for customer use
+  string graphql_type = 50200;
+
+  string field_description = 50300;
+
+  // Marks the field as being a contribution to any hash that is to be created for the message
+  bool hash_contributor = 50500;
+
+  // Marks the field which will return the nested field (described in the path) of the output type in GraphQL.
+  // Format -> Each nesting level (complex type) is separated by a dot.
+  //
+  // message Type1 { string value = 1; }
+  // message Type2 { Type1 type1 = 1; }
+  // message Type3 { Type2 type2 = 1 [(graphql_extract_output_path) = "type1.value"]}
+  //
+  // In such case, GraphQL will define the return/output type as string and will return `value` field
+  // of Type1 while try to get `type2` field.
+  string graphql_extract_output_path = 50800;
+
+  bool is_object_id = 50900; // indicates if the string field should be interpreted as ObjectId
+
+  // RESERVED: 75000-75999 for cloud/types/filter.proto
+}
+
+extend google.protobuf.MessageOptions {
+  // Marks the message as being internal and not intended for customer use
+  // If a gRPC method's request or response message is marked as internal,
+  // then the gRPC method will not be exposed to customers.
+  bool graphql_ignore_message = 50100;
+
+  // Marks the message as being public and intended for customer use in GraphQL API
+  bool graphql_message_type = 50101;
+
+  // Specifies the name of the GraphQL type.
+  string graphql_message_type_name = 50102;
+
+  string message_description = 50300;
+
+  // marks the message as one that is in need of protection (i.e. encrypt at rest, etc.)
+  bool protect_me = 50400;
+
+  // RESERVED: 75000-75999 for cloud/types/filter.proto
+}
+
+extend google.protobuf.FileOptions {
+  // Becomes the type prefix for all GraphQL types derived from file
+  string graphql_prefix = 50000;
+}
+
+extend google.protobuf.EnumOptions {
+  string enum_description = 50300;
+
+  // Marks the enum as being public and intended for customer use in GraphQL API
+  bool graphql_enum_type = 50400;
+
+}
+
+extend google.protobuf.EnumValueOptions {
+  string enum_value_description = 50300;
+
+  // Marks the enum value as being internal and not intended for customer use
+  bool graphql_ignore_enum_value = 50400;
+}
+
+extend google.protobuf.ServiceOptions {
+  string service_description = 50300;
+}
+
+extend google.protobuf.MethodOptions {
+
+  string method_description = 50300;
+
+  // The option determines a list of authorization modes which are supportable while GraphQL -> gRPC service call
+  repeated AuthMode graphql_auth_modes = 50303;
+
+}
+
+extend google.protobuf.OneofOptions {
+  string oneof_description = 50300;
+}
+
+enum AuthMode {
+  AUTH_MODE_UNSPECIFIED = 0;
+  PAT = 1;
+}
+
