@@ -208,9 +208,10 @@ message UInt64FilterExpression {
 message StringArrayFilterExpression {
     option (filter_expression) = true;
 
-    string eq          = 1 [(op) = OP_EQ];
-    repeated string in = 2 [(op) = OP_IN];
-    string ne          = 3 [(op) = OP_NE];
+    string eq           = 1 [(op) = OP_EQ];
+    repeated string in  = 2 [(op) = OP_IN];
+    string ne           = 3 [(op) = OP_NE];
+    repeated string nin = 4 [(op) = OP_NIN];
 }
 
 message TimestampFilterExpression {
