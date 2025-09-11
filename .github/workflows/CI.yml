@@ -366,9 +366,9 @@ jobs:
       # Python Package
       #
       - name: Prep Poetry
-        uses: abatilo/actions-poetry@v2.1.6
+        uses: abatilo/actions-poetry@v2.4.0
         with:
-          poetry-version: "2.0"
+          poetry-version: "2.0.1"
 
       - name: Remove gitignore
         run: |
