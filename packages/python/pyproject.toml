@@ -13,11 +13,11 @@ packages = [
     ]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
+python = ">=3.9,<4.0"
 protobuf = "^4.21.7"
 betterproto = {version = "^2.0.0b6", allow-prereleases = true}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
