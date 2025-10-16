@@ -24,12 +24,29 @@ option csharp_namespace = "Mapped.Cloud.Types";
 option go_package = "go.mapped.dev/pb/cloud/types;types";
 
 import "mapped/cloud/types/filter.proto";
+import "google/protobuf/timestamp.proto";
 
+ 
 message MetadataRecord {
   string key = 1;
   string value = 2;
+  message TypedValue {
+     oneof value {
+        string                    string_value    = 1;
+        bool                      bool_value      = 2;
+        google.protobuf.Timestamp timestamp_value = 3;
+        string                    json_value      = 4;
+        int32                     int32_value     = 5;
+        int64                     int_value       = 6;
+        uint32                    uint32_value    = 7;
+        uint64                    uint64_value    = 8;
+        double                    double_value    = 9;
+      }
+  }
+  TypedValue typed_value = 3;
 }
 
+ 
 message MetadataValue {
   repeated MetadataRecord values = 1;
 }
