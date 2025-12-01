@@ -16,18 +16,17 @@
 // ******************************************************************************************************
 syntax = "proto3";
 
-package mapped.cloud.files;
+package mapped.cloud.types;
+
+option java_multiple_files = true;
+option java_package = "com.mapped.cloud.types";
+option csharp_namespace = "Mapped.Cloud.Types";
+option go_package = "go.mapped.dev/pb/cloud/types;types";
 
 import "mapped/common.proto";
 
-option java_multiple_files = true;
-option java_package = "com.mapped.cloud.files";
-option csharp_namespace = "Mapped.Cloud.Files";
-option go_package = "go.mapped.dev/pb/cloud/files;files";
-
-// Depricate once it's supported in graphQl schemas
-enum MimeType {
-    MIME_TYPE_UNSPECIFIED = 0 [ (name) = "MIME_TYPE_UNSPECIFIED"];
+enum MediaType {
+    MEDIA_TYPE_UNSPECIFIED = 0 [ (name) = "MEDIA_TYPE_UNSPECIFIED"];
     APPLICATION_ANDREW_INSET = 1 [ (name) = "application/andrew-inset"];
     APPLICATION_ANNODEX = 2 [ (name) = "application/annodex"];
     APPLICATION_ATOMCAT_XML = 3 [ (name) = "application/atomcat+xml"];
