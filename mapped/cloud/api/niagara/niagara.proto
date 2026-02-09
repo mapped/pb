@@ -1,0 +1,295 @@
+// ******************************************************************************************************
+// Copyright 2022 Mapped Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ******************************************************************************************************
+
+syntax = "proto3";
+
+package mapped.cloud.api.niagara;
+
+option java_multiple_files = true;
+option java_package = "com.mapped.cloud.api.niagara";
+option csharp_namespace = "Mapped.Cloud.Api.Niagara";
+option go_package = "go.mapped.dev/pb/cloud/api/niagara;niagara";
+option (graphql_prefix) = "Niagara";
+
+import "google/protobuf/timestamp.proto";
+import "mapped/cloud/types/typed_value.proto";
+import "mapped/common.proto";
+
+service NiagaraService {
+    rpc ListChildComponents(ListChildComponentsRequest) returns (ListChildComponentsResponse);
+    rpc FindComponents(FindComponentsRequest) returns (FindComponentsResponse);
+    rpc GetComponentSummary(GetComponentSummaryRequest) returns (GetComponentSummaryResponse);
+    rpc GetComponentDetails(GetComponentDetailsRequest) returns (GetComponentDetailsResponse);
+    rpc GetComponentAncestors(GetComponentAncestorsRequest) returns (GetComponentAncestorsResponse);
+    rpc UpsertDeviceSubscription(UpsertDeviceSubscriptionRequest) returns (UpsertDeviceSubscriptionResponse);
+    rpc Reset(ResetRequest) returns (ResetResponse);
+    rpc Ping(PingRequest) returns (PingResponse);
+}
+
+// Envelope for tunneling component RPCs over NATS JetStream.
+// JetStream provides ordering and exactly-once delivery; the edge fails fast on errors.
+message RequestEnvelope {
+    // Unique identifier for this request (used for logging/debugging).
+    string request_id = 1;
+    google.protobuf.Timestamp sent_at = 4;
+
+    // Optional client-provided timeout in milliseconds; 0 means unset.
+    uint32 timeout_ms = 5;
+
+    // Free-form metadata (auth, tenant, trace, etc).
+    map<string, string> metadata = 6;
+
+    oneof request {
+        GetComponentSummaryRequest get_component_summary = 20;
+        GetComponentDetailsRequest get_component_details = 21;
+        ListChildComponentsRequest list_child_components = 22;
+        GetComponentAncestorsRequest get_component_ancestors = 23;
+        FindComponentsRequest find_components = 24;
+        UpsertDeviceSubscriptionRequest upsert_device_subscription = 25;
+        PingRequest ping = 26;
+        ResetRequest reset = 27;
+    }
+}
+
+message ResponseEnvelope {
+    // Echoed from request for logging/debugging.
+    string request_id = 1;
+    google.protobuf.Timestamp sent_at = 3;
+
+    // Free-form metadata (trace, diagnostics, etc).
+    map<string, string> metadata = 4;
+
+    // If set, indicates an error occurred processing the request. Otherwise, the response is valid.
+    // If set, the response oneof will be empty.
+    optional RpcError error = 5;
+
+    oneof response {
+        GetComponentSummaryResponse get_component_summary = 20;
+        GetComponentDetailsResponse get_component_details = 21;
+        ListChildComponentsResponse list_child_components = 22;
+        GetComponentAncestorsResponse get_component_ancestors = 23;
+        FindComponentsResponse find_components = 24;
+        UpsertDeviceSubscriptionResponse upsert_device_subscription = 25;
+        PingResponse ping = 26;
+        ResetResponse reset = 27;
+    }
+}
+
+message RpcError {
+    RpcErrorCode code = 1;
+    string message = 2;
+    bool retryable = 3;
+    map<string, string> details = 4;
+}
+
+enum RpcErrorCode {
+    ERROR_CODE_UNSPECIFIED = 0;
+
+    INVALID_ARGUMENT = 10;
+    NOT_FOUND = 11;
+    NOT_AUTHORIZED = 12;
+    NOT_SUPPORTED = 13;
+    CONFLICT = 14;
+    TOO_MANY_REQUESTS = 15;
+    ALREADY_EXISTS = 16;
+    FAILED_PRECONDITION = 17;
+
+    STATION_BUSY = 30;
+    DOWNSTREAM_UNAVAILABLE = 31;
+    TIMEOUT = 32;
+    INTERNAL_ERROR = 33;
+    UNAVAILABLE = 34;
+    CANCELLED = 35;
+}
+
+message GetComponentSummaryRequest {
+    string connector_id = 1;
+    repeated ComponentRef ref = 2;
+}
+
+message GetComponentSummaryResponse {
+    repeated ComponentSummaryResponseItem items = 1;
+}
+
+message GetComponentDetailsRequest {
+    string connector_id = 1;
+    repeated ComponentRef ref = 2;
+}
+
+message GetComponentDetailsResponse {
+    repeated ComponentDetailsResponseItem items = 1;
+}
+
+message ListChildComponentsRequest {
+    string connector_id = 1;
+    ComponentRef parent_ref = 2;
+
+    // Optional filters
+    optional string name_prefix_filter = 20;
+    repeated ComponentType type_filter = 21;
+
+    int32 page_size = 50;
+    string page_token = 51;
+}
+
+message ListChildComponentsResponse {
+    repeated ComponentSummary components = 1;
+    string next_page_token = 2;
+}
+
+message FindComponentsRequest {
+    string connector_id = 1;
+
+    // Optional filters
+    optional string name_prefix_filter = 20;
+    repeated ComponentType type_filter = 21;
+
+    int32 page_size = 50;
+    string page_token = 51;
+}
+
+message FindComponentsResponse {
+    repeated ComponentSummary components = 1;
+    string next_page_token = 2;
+}
+
+message GetComponentAncestorsRequest {
+    string connector_id = 1;
+    ComponentRef ref = 2;
+}
+
+// Response for getting all ancestors of a component
+// ordered from immediate parent to root
+message GetComponentAncestorsResponse {
+    repeated ComponentSummary ancestors = 1;
+}
+
+// Request to subscribe or unsubscribe to all of the data points of a device
+message UpsertDeviceSubscriptionRequest {
+    string connector_id = 1;
+    ComponentRef device_ref = 2;
+    bool subscribe = 3;
+    uint32 polling_interval_min = 4;
+}
+
+message UpsertDeviceSubscriptionResponse {
+    ComponentSummary device_summary = 1;
+}
+
+message ResetRequest {
+    string connector_id = 1;
+}
+
+message ResetResponse {
+}
+
+message PingRequest {
+    string connector_id = 1;
+}
+
+message PingResponse {
+}
+
+message DevicePointUpdate {
+    ComponentRef device_ref = 1;
+    DeviceStatus status = 2;
+    google.protobuf.Timestamp timestamp = 3;
+    repeated PointReading point_readings = 4;
+}
+
+message DeviceStatus {
+    bool fault = 1;
+    string fault_cause = 2;    
+}
+
+message PointReading {
+    ComponentRef point_ref = 1;
+    PointStatus status = 2;
+    mapped.cloud.types.TypedValue value = 3;
+}
+
+message PointStatus {
+    bool ok = 1;
+    repeated string flags = 2;
+}
+
+message ComponentDetails {
+    ComponentRef ref = 1;
+    ComponentRef parent_ref = 2;
+    string name = 3;
+    string description = 4;
+    ComponentType type = 5;
+    map<string, mapped.cloud.types.TypedValue> properties = 7;
+    map<string, mapped.cloud.types.TypedValue> facets = 8;
+    repeated string flags = 9;
+    string java_class = 10;
+
+    // Subscription metadata
+    bool is_subscribed = 50;
+}
+
+message ComponentSummaryResponseItem {
+    oneof result {
+        ComponentSummary summary = 1;
+        RpcError error = 2;
+    }
+}
+
+message ComponentDetailsResponseItem {
+    oneof result {
+        ComponentDetails details = 1;
+        RpcError error = 2;
+    }
+}
+
+message ComponentSelector {
+    ComponentRef ref = 1;
+}
+
+message ComponentSummary {
+    ComponentRef ref = 1;
+    string name = 2;
+    ComponentType type = 3;
+    string java_class = 4;
+    bool has_children = 5;
+
+    // Subscription metadata
+    bool is_subscribed = 20;
+
+}
+
+enum ComponentType {
+    COMPONENT_TYPE_UNSPECIFIED = 0;
+    STATION = 1;
+    FOLDER = 2;
+    DEVICE = 3;
+    POINT = 4;
+    SERVICE = 5;
+    ALARM = 6;
+    TREND = 7;
+    SCHEDULE = 8;
+    PROGRAM = 9;
+    NETWORK = 10;
+    HISTORY = 11;
+
+    OTHER = 200;
+}
+
+message ComponentRef {
+  string sid = 1; // preferred (stable)
+  string ord = 2;    // optional fallback
+  string path = 3;   // optional fallback
+}
