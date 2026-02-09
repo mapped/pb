@@ -242,7 +242,7 @@ jobs:
       # Enironment Setup
       #
       - name: Pull Source
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v4
 
       - name: GET CURRENT BRANCH NAME
         id: get-branch
@@ -252,9 +252,9 @@ jobs:
         run: echo "name=${{ steps.get-branch.outputs.branch }} - tag=${{ steps.get-branch.outputs.tag }}"
 
       - name: Setting Up protoc
-        uses: arduino/setup-protoc@v1
+        uses: arduino/setup-protoc@v3
         with:
-          version: "3.19.4" # NOTE: Fix the protoc version due to https://github.com/protocolbuffers/protobuf/issues/10695
+          version: "31.0"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Establish Versioning, Tags, and Labels
@@ -263,6 +263,7 @@ jobs:
         with:
           baseVersion: ${{ env.BASE_VERSION }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          dockerImage: ${{ env.IMAGE_NAME }}
 
       #
       # Transpiling protobufs
@@ -272,12 +273,12 @@ jobs:
       - name: Cleaning up built/
         run: rm -rf ./built
 
-      # Transpile Java
+      # Transpile all except C#
       - name: Transpile .proto files
         uses: ory/build-buf-action@v0.0.10
         with:
-          bufVersion: v1.46.0
-          protocPlugins: grpc-java@1.49.0
+          bufVersion: v1.54.0
+          protocPlugins: grpc-java@1.73.0
           bufArgs: generate --config buf.yaml --template buf.gen.java.yaml
 
       #
@@ -292,16 +293,15 @@ jobs:
           settings-path: ${{ github.workspace }}/packages/java # location for the settings.xml file
 
       - name: Java - Set up version in pom
-        run: sed -i "s/\${PROTOREPO_VERSION}/${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }}/g" pom.xml
+        run: sed -i "s/\${PROTOREPO_VERSION}/${{ steps.vtl.outputs.ver_semVerNoMeta }}/g" pom.xml
         working-directory: packages/java
 
       - name: Java - Build with Maven
-        run: mvn -Dmaven.resolver.transport=wagon -Drevision=${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }} -B package --file pom.xml
+        run: mvn -Dmaven.resolver.transport=wagon -Drevision=${{ steps.vtl.outputs.ver_semVerNoMeta }} -B package --file pom.xml
         working-directory: packages/java
 
       - name: Java - Publish to GitHub Packages
-        if: ${{ github.ref == 'refs/heads/main' }} # Remove after https://app.clickup.com/t/1qe8yda is fixed
-        run: mvn -Dmaven.resolver.transport=wagon -Drevision=${{ steps.vtl.outputs.ver_semVerFourTupleNumeric }} deploy -s settings.xml -X
+        run: mvn -Dmaven.resolver.transport=wagon -Drevision=${{ steps.vtl.outputs.ver_semVerNoMeta }} deploy -s settings.xml -X
         working-directory: packages/java
         env:
           GITHUB_TOKEN: ${{ github.token }}
