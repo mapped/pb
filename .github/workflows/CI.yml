@@ -12,7 +12,7 @@ name: protorepo CI
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
     paths-ignore:
       - "README.md"
       - "built"
