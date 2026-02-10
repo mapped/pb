@@ -232,14 +232,27 @@ message ComponentDetails {
     string name = 3;
     string description = 4;
     ComponentType type = 5;
-    map<string, mapped.cloud.types.TypedValue> properties = 7;
-    map<string, mapped.cloud.types.TypedValue> facets = 8;
-    repeated string flags = 9;
-    string java_class = 10;
+    map<string, PropertyDetails> properties = 6;
+    map<string, mapped.cloud.types.TypedValue> facets = 7;
+    repeated string flags = 8;
+    string java_class = 9;
 
     // Subscription metadata
     bool is_subscribed = 50;
+
+    // Point-specific details
+    repeated string enum_point_ordinals = 70;    // if this component is an enum, the possible values
+
 }
+
+ // Detailed information about a single component property, including its value and metadata
+ message PropertyDetails {
+     // The current value of the property
+     mapped.cloud.types.TypedValue value = 1;
+
+     // Property-level facets (metadata constraints like min, max, precision, units, range)
+     map<string, mapped.cloud.types.TypedValue> facets = 2;
+ }
 
 message ComponentSummaryResponseItem {
     oneof result {
