@@ -29,13 +29,21 @@ import "mapped/cloud/types/typed_value.proto";
 import "mapped/common.proto";
 
 service NiagaraService {
+    // List immediate children of a component, with optional filtering and pagination
     rpc ListChildComponents(ListChildComponentsRequest) returns (ListChildComponentsResponse);
+    // Find components across the station with optional filtering and pagination
     rpc FindComponents(FindComponentsRequest) returns (FindComponentsResponse);
+    // Get summaries for specific components by reference
     rpc GetComponentSummary(GetComponentSummaryRequest) returns (GetComponentSummaryResponse);
+    // Get detailed information for specific components by reference
     rpc GetComponentDetails(GetComponentDetailsRequest) returns (GetComponentDetailsResponse);
+    // Get all ancestors of a component, ordered from immediate parent to root
     rpc GetComponentAncestors(GetComponentAncestorsRequest) returns (GetComponentAncestorsResponse);
+    // Subscribe or unsubscribe to all data points of a device, with optional polling interval for unsubscribed devices
     rpc UpsertDeviceSubscription(UpsertDeviceSubscriptionRequest) returns (UpsertDeviceSubscriptionResponse);
+    // Reset the station connection, clearing all caches and subscriptions. Use for testing or recovery from errors.
     rpc Reset(ResetRequest) returns (ResetResponse);
+    // Simple health check for connectivity and authentication. Use for testing or monitoring.
     rpc Ping(PingRequest) returns (PingResponse);
 }
 
