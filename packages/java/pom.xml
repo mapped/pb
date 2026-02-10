@@ -23,7 +23,7 @@
     <repository>
       <id>github</id>
       <name>Mapped/protorepo Github Packages for Maven</name>
-      <url>https://maven.pkg.github.com/mapped/protorepo</url>
+      <url>https://maven.pkg.github.com/mapped/pb</url>
       <releases>
         <enabled>true</enabled>
       </releases>
