@@ -45,6 +45,8 @@ service NiagaraService {
     rpc Reset(ResetRequest) returns (ResetResponse);
     // Simple health check for connectivity and authentication. Use for testing or monitoring.
     rpc Ping(PingRequest) returns (PingResponse);
+    // Search for child components matching criteria, returning summaries with pagination. More flexible than ListChildComponents.
+    rpc SearchChildComponents(SearchChildComponentsRequest) returns (SearchChildComponentsResponse);
 }
 
 // Envelope for tunneling component RPCs over NATS JetStream.
@@ -69,6 +71,7 @@ message RequestEnvelope {
         UpsertDeviceSubscriptionRequest upsert_device_subscription = 25;
         PingRequest ping = 26;
         ResetRequest reset = 27;
+        SearchChildComponentsRequest search_child_components = 28;
     }
 }
 
@@ -93,6 +96,7 @@ message ResponseEnvelope {
         UpsertDeviceSubscriptionResponse upsert_device_subscription = 25;
         PingResponse ping = 26;
         ResetResponse reset = 27;
+        SearchChildComponentsResponse search_child_components = 28;
     }
 }
 
@@ -211,6 +215,25 @@ message PingRequest {
 message PingResponse {
 }
 
+message SearchChildComponentsRequest {
+    string connector_id = 1;
+    ComponentRef parent_ref = 2;
+
+    // Optional filters
+    optional string name_prefix_filter = 20;
+    repeated ComponentType type_filter = 21;
+    optional SortField sort_field = 22;   // e.g. sort by name, type, etc
+    optional SortDirection sort_direction = 23; // e.g. ascending vs descending
+
+    int32 page_size = 50;
+    string page_token = 51;
+}
+
+message SearchChildComponentsResponse {
+    repeated ComponentSummary components = 1;
+    string next_page_token = 2;
+}
+
 message DevicePointUpdate {
     ComponentRef device_ref = 1;
     DeviceStatus status = 2;
@@ -309,8 +332,20 @@ enum ComponentType {
     OTHER = 200;
 }
 
+enum SortField {
+    SORT_COLUMN_UNSPECIFIED = 0;
+    NAME = 1;
+    TYPE = 2;
+}
+
+enum SortDirection {
+    SORT_DIRECTION_UNSPECIFIED = 0;
+    ASCENDING = 1;
+    DESCENDING = 2;
+}
+
 message ComponentRef {
-  string sid = 1; // preferred (stable)
-  string ord = 2;    // optional fallback
+  string sid = 1; // optional fallback
+  string ord = 2;    // prefferred stable
   string path = 3;   // optional fallback
 }
