@@ -221,7 +221,7 @@ message SearchChildComponentsRequest {
 
     // Optional filters
     optional string name_prefix_filter = 20;
-    repeated ComponentType type_filter = 21;
+    optional ComponentType type_filter = 21;
     optional SortField sort_field = 22;   // e.g. sort by name, type, etc
     optional SortDirection sort_direction = 23; // e.g. ascending vs descending
 
@@ -323,11 +323,8 @@ enum ComponentType {
     POINT = 4;
     SERVICE = 5;
     ALARM = 6;
-    TREND = 7;
-    SCHEDULE = 8;
-    PROGRAM = 9;
-    NETWORK = 10;
-    HISTORY = 11;
+    SCHEDULE = 7;
+    NETWORK = 8;
 
     OTHER = 200;
 }
