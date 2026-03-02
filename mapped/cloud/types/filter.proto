@@ -119,6 +119,7 @@ message StringFilterExpression {
     string re          = 5 [(op) = OP_REGEX];
     string eq_case_insensitive          = 6 [(op) = OP_EQUALS_CASE_INSENSITIVE];
     string contains_case_insensitive    = 7 [(op) = OP_CONTAINS_CASE_INSENSITIVE];
+    repeated string nin                 = 8 [(op) = OP_NIN];
 }
 
 message StringMapStringFilterExpression {
@@ -271,15 +272,15 @@ enum Operator {
     OPERATOR_UNSPECIFIED = 0;
 
     // Existance
-    OP_EXISTS = 1;      // bool value (true=exists, false=does not exist)
+    OP_EXISTS = 1; // bool value (true=exists, false=does not exist)
 
     // Numeric expressions
-    OP_EQ = 10;     // == 
-    OP_NE = 11;     // !=
-    OP_GT = 12;     // >
-    OP_GTE = 13;    // >=
-    OP_LT = 14;     // <
-    OP_LTE = 15;    // <=
+    OP_EQ = 10; // ==
+    OP_NE = 11; // !=
+    OP_GT = 12; // >
+    OP_GTE = 13; // >=
+    OP_LT = 14; // <
+    OP_LTE = 15; // <=
 
     OP_EQ_ELEM_MATCH = 16; // Matches if the stored array field contains an element that matches the provided query value (used for arrays of objects)
     OP_NE_ELEM_MATCH = 17; // Matches if the stored array field does not contain an element that matches the provided query value (used for arrays of objects)
@@ -287,17 +288,17 @@ enum Operator {
     // String expressions
     OP_EQUALS       = 20;
     OP_CONTAINS     = 21;
-    OP_REGEX        = 22;      // Regex - regex in query value provided used on stored field (/pattern/{opts} or 'pattern' format)
-    OP_INVREGEX     = 23;      // Inverted regex - regex in stored field used on query value provided
+    OP_REGEX        = 22; // Regex - regex in query value provided used on stored field (/pattern/{opts} or 'pattern' format)
+    OP_INVREGEX     = 23; // Inverted regex - regex in stored field used on query value provided
     OP_EQUALS_CASE_INSENSITIVE      = 24; // Case insensitive equals
     OP_CONTAINS_CASE_INSENSITIVE    = 25; // Case insensitive contains
 
 
     // Array expressions
-    OP_SIZE = 31;       // Matches if the stored array field is the size specified in the query value
-    OP_ALL = 32;        // Matches stored arrays that contain all elements specified in the query value array
-    OP_IN = 33;         // Check if a stored scalar field is ANY of the values in the provided query value array
-    OP_NIN = 34;        // Check if a stored scalar field is NONE of the values in the provided query value array
+    OP_SIZE = 31; // Matches if the stored array field is the size specified in the query value
+    OP_ALL = 32; // Matches stored arrays that contain all elements specified in the query value array
+    OP_IN = 33; // Check if a stored scalar field is ANY of the values in the provided query value array
+    OP_NIN = 34; // Check if a stored scalar field is NONE of the values in the provided query value array
 
     // TODO: Geospatial
 }
