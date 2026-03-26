@@ -75,6 +75,7 @@ message RequestEnvelope {
         PingRequest ping = 26;
         ResetRequest reset = 27;
         SearchChildComponentsRequest search_child_components = 28;
+        UpdateObservabilitySettingsRequest update_observability_settings = 29;
     }
 }
 
@@ -100,6 +101,7 @@ message ResponseEnvelope {
         PingResponse ping = 26;
         ResetResponse reset = 27;
         SearchChildComponentsResponse search_child_components = 28;
+        UpdateObservabilitySettingsResponse update_observability_settings = 29;
     }
 }
 
