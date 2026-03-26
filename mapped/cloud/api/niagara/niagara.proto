@@ -27,6 +27,7 @@ option (graphql_prefix) = "Niagara";
 import "google/protobuf/timestamp.proto";
 import "mapped/cloud/types/typed_value.proto";
 import "mapped/common.proto";
+import "google/protobuf/wrappers.proto";
 
 service NiagaraService {
     // List immediate children of a component, with optional filtering and pagination
@@ -47,6 +48,8 @@ service NiagaraService {
     rpc Ping(PingRequest) returns (PingResponse);
     // Search for child components matching criteria, returning summaries with pagination. More flexible than ListChildComponents.
     rpc SearchChildComponents(SearchChildComponentsRequest) returns (SearchChildComponentsResponse);
+    // Update the observability settings for the station, such as log level and flush parameters.
+    rpc UpdateObservabilitySettings(UpdateObservabilitySettingsRequest) returns (UpdateObservabilitySettingsResponse);
 }
 
 // Envelope for tunneling component RPCs over NATS JetStream.
@@ -232,6 +235,30 @@ message SearchChildComponentsRequest {
 message SearchChildComponentsResponse {
     repeated ComponentSummary components = 1;
     string next_page_token = 2;
+}
+
+message UpdateObservabilitySettingsRequest {
+    string connector_id = 1;
+    ObservabilitySettings settings = 2;
+}
+
+message UpdateObservabilitySettingsResponse {
+    ObservabilitySettings settings = 1;
+}
+
+message ObservabilitySettings {
+    LogLevel cloud_log_level = 1;
+    google.protobuf.Int32Value flush_batch_size = 2;
+    google.protobuf.Int32Value flush_interval_ms = 3;
+    google.protobuf.Int32Value max_queue_size = 4;
+}
+
+enum LogLevel {
+    LOG_LEVEL_UNSPECIFIED = 0;
+    FINE = 1;
+    INFO = 2;
+    WARNING = 3;
+    SEVERE = 4;
 }
 
 message DevicePointUpdate {
