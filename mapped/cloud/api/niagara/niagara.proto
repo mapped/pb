@@ -299,10 +299,21 @@ message ComponentDetails {
 
     // Subscription metadata
     bool is_subscribed = 50;
+    SubscriptionDetails subscription = 51;
 
     // Point-specific details
     repeated string enum_point_ordinals = 70;    // if this component is an enum, the possible values
 
+}
+
+// Detailed information about a subscription, including its parameters and status
+message SubscriptionDetails {
+    // Whether the subscription is currently active
+    SubscriptionStatus status = 1;
+    uint32 polling_interval_min = 2;
+
+
+    google.protobuf.Timestamp last_poll_date = 50;
 }
 
  // Detailed information about a single component property, including its value and metadata
@@ -341,7 +352,7 @@ message ComponentSummary {
 
     // Subscription metadata
     bool is_subscribed = 20;
-
+    SubscriptionDetails subscription = 21;
 }
 
 enum ComponentType {
@@ -370,8 +381,15 @@ enum SortDirection {
     DESCENDING = 2;
 }
 
+enum SubscriptionStatus {
+    SUBSCRIPTION_STATUS_UNSPECIFIED = 0;
+    SUBSCRIBED = 1;
+    UNSUBSCRIBED = 2;
+}
+
 message ComponentRef {
   string sid = 1; // optional fallback
   string ord = 2;    // prefferred stable
   string path = 3;   // optional fallback
 }
+
