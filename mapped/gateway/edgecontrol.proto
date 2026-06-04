@@ -45,6 +45,9 @@ message WritePropsRequest {
     //       writing multiple properties at once, which means write requests must be serialized
     uint32 timeout_per_device_in_ms = 2;
 
+    // A list of [delay, mappingKeys] to poll after a successful write
+    repeated PostWritePollRequest post_write_poll_requests = 3;
+
     // Simulate the command by only validating the input and logging
     // do not send actual commands over the wire
     bool simulate = 100;
@@ -91,4 +94,16 @@ message MappingKeyAndResult {
 
     // Protocol-specific error code
     int64 protocol_error_code = 5;
+}
+
+message PostWritePollRequest {
+    // How long to wait after a write operation before polling the list of mapping_keys
+    // for updated values? Must be greater than `0`.
+    uint32 delay_seconds = 1;
+
+    // The list of mappingKeys that should be polled after delay_seconds
+    // ... for mappingKey entries in the list that do not include a specific property, the
+    //     default set of "polling" properties for the associated protocols is polled. In
+    //     the case of bacnet that is `polling_properties` (or `[85]` if that is not set)
+    repeated string mapping_keys = 2;
 }
