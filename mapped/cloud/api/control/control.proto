@@ -30,14 +30,8 @@ message WritePropRequest {
     // The property value(s) to write
     PointReferenceAndValue payload = 1;
 
-    // The timeout for each request to each subtended device in milliseconds
-    // NOTE: UGAgent makes every attempt to parallelize these, but some devices don't support
-    //       writing multiple properties at once, which means write requests must be serialized
-    uint32 timeout_in_ms = 2;
-
-
-    // A list of [delay, mappingKeys] to poll after a successful write
-    repeated PostWritePollRequest post_write_poll_requests = 3;
+    // A list of [delay, pointIDs/mappingKey] to poll after a successful write
+    repeated PostWritePollRequest post_write_poll_requests = 2;
 
     // Simulate the command by only validating the input and logging
     // do not send an actual command over the wire
