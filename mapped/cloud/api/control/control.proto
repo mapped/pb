@@ -47,6 +47,29 @@ message WritePropResponse {
     PointReferenceAndResult payload = 2;
 }
 
+message ReadPropsRequest {
+    // Points values to read
+    repeated string point_reference_ids = 1;
+
+    // The timeout for each request to each subtended device in milliseconds
+    // NOTE: UGAgent makes every attempt to parallelize these, but some devices don't support
+    //       reading multiple properties at once, which means read requests must be serialized
+    uint32 timeout_per_device_in_ms = 2;
+
+    // Simulate the command by only validating the input and logging
+    // do not send actual commands over the wire
+    bool simulate = 100;
+}
+
+message ReadPropsResponse {
+    // The unique ID of this request to be provided to Mapped Support
+    // for troubleshooting in the case of unexpected errors
+    string request_id = 1;
+
+    // The result of each property read
+    repeated PointReferenceAndResult results = 2;
+}
+
 message PointReferenceAndValue {
     // The `point.id` or `point.mappingKey` where the value originated from or is to be written to
     string point_reference_id = 1;
@@ -79,6 +102,10 @@ message PointReferenceAndResult {
 
     // Protocol-specific error code
     int64 connector_error_code = 5;
+
+    // The value read if this is in response to a read request 
+    mapped.cloud.types.TypedValue value = 20;
+
 }
 
 message PostWritePollRequest {
