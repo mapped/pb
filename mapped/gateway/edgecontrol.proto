@@ -69,7 +69,7 @@ message WritePropsResponse {
 
 message ReadPropsRequest {
     // The property value(s) to read
-    string mapping_key = 1;
+    repeated string mapping_keys = 1;
 
     // The timeout for each request to each subtended device in milliseconds
     // NOTE: UGAgent makes every attempt to parallelize these, but some devices don't support
