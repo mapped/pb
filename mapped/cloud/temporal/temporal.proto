@@ -24,9 +24,10 @@ option csharp_namespace = "Mapped.Cloud.Temporal";
 option go_package = "go.mapped.dev/pb/cloud/temporal;temporal";
 
 message WorkflowInfo {
-    string workflow_type   = 1;
-    string workflow_id     = 2;
-    string run_id          = 3;
+    string workflow_type    = 1;
+    string workflow_id      = 2;
+    string run_id           = 3;
+    string namespace        = 4;
 }
 
 
