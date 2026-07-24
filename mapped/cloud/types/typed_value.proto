@@ -68,7 +68,7 @@ message TypedValue {
         bytes uuid_value = 19;              // must be exactly 16 bytes
         BoolArray bool_array_value = 20;
         uint32 enum_value = 21;
-        
+
         mapped.cloud.types.Date date_value = 22;
         mapped.cloud.types.TimeOfDay time_value = 23;
         google.protobuf.Timestamp timestamp_value = 24;
@@ -77,7 +77,8 @@ message TypedValue {
         AnyLinkedData json = 29;
         GenericTypedMap map_value = 30;
         IsoDuration duration_value = 31;
-        
+        TypedValueList list_value = 32;
+
         // Proposed types
         mapped.cloud.types.CalendarPeriod calendar_period_value = 100;
         mapped.cloud.types.DayOfWeek day_of_week_value = 101;
@@ -92,6 +93,10 @@ message TypedValue {
 
 message TypedValueMap {
     map<string, TypedValue> map = 1;
+}
+
+message TypedValueList {
+    repeated TypedValue list = 1;
 }
 
 message GenericTypedMap {
