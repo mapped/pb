@@ -56,6 +56,11 @@ message ReadPropsRequest {
     //       reading multiple properties at once, which means read requests must be serialized
     uint32 timeout_per_device_in_ms = 2;
 
+    // Many protocols implement concurrency guards to prevent older equipment from being
+    // flooded by requests. For critical ReadProps requests, this option gives the caller
+    // the ability to skip any concurrency guards that might be in place.
+    bool bypass_concurrency_guards = 3;
+
     // Simulate the command by only validating the input and logging
     // do not send actual commands over the wire
     bool simulate = 100;
