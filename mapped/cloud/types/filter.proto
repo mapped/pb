@@ -39,7 +39,7 @@ import "mapped/cloud/types/typed_value.proto";
 //        StringFilterExpression my_field = 1;
 //        Int32FilterExpression my_value  = 2 [(mapped.cloud.types.filter_path) = "my_root_type.my_value"];
 //        MyTypeFilter my_type = 3;
-//        
+//
 //        repeated MyFilter and = 10;
 //        repeated MyFilter or = 10;
 //        repeated MyFilter not = 10;
@@ -74,7 +74,7 @@ import "mapped/cloud/types/typed_value.proto";
 //     ```proto
 //     message MyElemMatch {
 //         option (mapped.cloud.types.filter_elem_match) = true;    // This is the key part.
-//     
+//
 //         mapped.cloud.types.StringFilterExpression field_a = 1;
 //         mapped.cloud.types.StringFilterExpression field_b = 2 [(mapped.cloud.types.filter_path) = "b"]; // Can still use filter_path
 //     }
@@ -171,6 +171,12 @@ message Int32FilterExpression {
     int32 gte         = 3 [(op) = OP_GTE];
     int32 lt          = 4 [(op) = OP_LT];
     int32 lte         = 5 [(op) = OP_LTE];
+
+    bool eq_is_defined = 7; // This is to distinguish explicitly defined value from its default value. The filter is not effective only if eq == 0 and _eq_is_defined == false.
+    bool gt_is_defined = 8; // This is to distinguish explicitly defined value from its default value. The filter is not effective only if gt == 0 and _gt_is_defined == false.
+    bool gte_is_defined = 9; // This is to distinguish explicitly defined value from its default value. The filter is not effective only if gte == 0 and _gte_is_defined == false.
+    bool lt_is_defined = 10; // This is to distinguish explicitly defined value from its default value. The filter is not effective only if lt == 0 and _lt_is_defined == false.
+    bool lte_is_defined = 11; // This is to distinguish explicitly defined value from its default value. The filter is not effective only if lte == 0 and _lte_is_defined == false.
     repeated int32 in = 6 [(op) = OP_IN];
 }
 message Int64FilterExpression {
@@ -284,7 +290,7 @@ enum Operator {
 
     OP_EQ_ELEM_MATCH = 16; // Matches if the stored array field contains an element that matches the provided query value (used for arrays of objects)
     OP_NE_ELEM_MATCH = 17; // Matches if the stored array field does not contain an element that matches the provided query value (used for arrays of objects)
-    
+
     // String expressions
     OP_EQUALS       = 20;
     OP_CONTAINS     = 21;
