@@ -28,6 +28,7 @@ env:
 permissions:
   contents: write # To create version tags
   packages: write
+  pull-requests: read
 
 jobs:
   # Lint
