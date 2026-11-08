@@ -46,18 +46,18 @@ jobs:
   build-csharp:
     runs-on: ubuntu-latest
     needs: lint
+    # The nuget.org Trusted Publishing policy for Mapped.PB is scoped to this environment
+    environment: prod
+    # Job-level permissions replace the workflow-level ones, so restate them here
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: read
+      id-token: write # Required for nuget.org Trusted Publishing (OIDC)
     steps:
       #
       # Enironment Setup
       #
-      - name: Install dependencies
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y wget ca-certificates
-          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
-          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
-          rm libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
-
       - name: Pull Source
         uses: actions/checkout@v3.0.2
 
@@ -71,7 +71,7 @@ jobs:
       - name: Setting Up dotnet
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: "3.1.x" # x will use the latest version of the 3.1 channel
+          dotnet-version: "10.0.x" # x will use the latest version of the 10.0 channel
           source-url: https://nuget.pkg.github.com/mapped/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -131,9 +131,21 @@ jobs:
           # and https://github.com/actions/setup-dotnet/issues/101
           DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER: 0
 
+      # Exchange the GitHub OIDC token for a short-lived (1 hour) nuget.org API key.
+      # See https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing
+      # NUGET_USER is the nuget.org profile name (not email) of the user who owns the
+      # Trusted Publishing policy; it is stored as a secret on the "prod" environment.
+      - name: C# - NuGet Login (Trusted Publishing)
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: C# - Publish Package (NuGet)
-        run: dotnet nuget push **/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_PB_PUSH}}
+        run: dotnet nuget push **/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY"
         working-directory: ./packages/csharp/Mapped.PB
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
 
   build-go:
     runs-on: ubuntu-latest
@@ -216,7 +228,7 @@ jobs:
           # cloud package uses cloudevents/sdk-go
           CLOUD_GO_MOD="cloud/go.mod"
           echo "" >> ${CLOUD_GO_MOD}
-          echo "require github.com/cloudevents/sdk-go/v2 v2.15.2" >> ${CLOUD_GO_MOD}
+          echo "require github.com/cloudevents/sdk-go/v2 v2.16.2" >> ${CLOUD_GO_MOD}
 
           # Push to pb-go
           git config --global user.email "buildpipeline@mapped.com"
@@ -327,7 +339,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: "3.10"
 
       - name: Setting Up protoc
         uses: arduino/setup-protoc@v1

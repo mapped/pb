@@ -17,14 +17,14 @@
     "org"
   ],
   "dependencies": {
-    "@grpc/grpc-js": "^1.12.2",
-    "protobufjs": "^7.4.0",
-    "ts-proto": "^2.2.5",
-    "ts-proto-descriptors": "^2.0.0"
+    "@grpc/grpc-js": "^1.14.7",
+    "protobufjs": "^7.6.6",
+    "ts-proto": "^2.18.4",
+    "ts-proto-descriptors": "^2.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.5.0",
-    "typescript": "^5.5.4"
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
   },
   "typesVersions": {
     "*": {

@@ -13,8 +13,8 @@ packages = [
     ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
-protobuf = "^4.21.7"
+python = ">=3.10,<4.0"
+protobuf = ">=5.29.6,<7"
 betterproto = {version = "^2.0.0b6", allow-prereleases = true}
 
 [tool.poetry.group.dev.dependencies]
