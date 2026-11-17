@@ -304,6 +304,11 @@ message ComponentDetails {
     // Point-specific details
     repeated string enum_point_ordinals = 70;    // if this component is an enum, the possible values
 
+    // The kind of value the station module publishes readings for on this point, decided by the
+    // module itself (the same check its poller uses). UNSPECIFIED for components that are not
+    // points, and for station modules that predate this field.
+    PointValueKind point_value_kind = 71;
+
 }
 
 // Detailed information about a subscription, including its parameters and status
@@ -379,6 +384,18 @@ enum SortDirection {
     SORT_DIRECTION_UNSPECIFIED = 0;
     ASCENDING = 1;
     DESCENDING = 2;
+}
+
+// The kind of value a station module publishes for a point. It lets a consumer know what a point
+// will carry, and whether it will carry anything, without inferring it from the Niagara class name.
+enum PointValueKind {
+    POINT_VALUE_KIND_UNSPECIFIED = 0;
+    NUMERIC = 1;
+    BOOLEAN = 2;
+    ENUM = 3;
+    STRING = 4;
+    // A control point the station module does not poll: it publishes no readings for it.
+    UNSUPPORTED = 5;
 }
 
 enum SubscriptionStatus {
